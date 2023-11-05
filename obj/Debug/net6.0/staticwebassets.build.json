@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "WO1K5fipdhZx57XQIc62Yvbs9t014ytEG6INX5Q22Ng=",
+  "Source": "GoogleCalendarAPI",
+  "BasePath": "_content/GoogleCalendarAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
