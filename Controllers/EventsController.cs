@@ -41,6 +41,18 @@ namespace GoogleCalendarAPI.Controllers
 
             try
             {
+                List<EventAttachment> eventAttachments = new();
+                if(eventDTO.AttachmentURLs.Count > 0)
+                {
+                    for(int i = 0; i < eventDTO.AttachmentURLs.Count; i++) 
+                    {
+                        eventAttachments.Add(new EventAttachment() 
+                            { 
+                            FileUrl = eventDTO.AttachmentURLs[i],
+                            }
+                        );
+                    }
+                }
                 Event newEvent = new()
                 {
                     Summary = eventDTO.Summary,
@@ -56,10 +68,16 @@ namespace GoogleCalendarAPI.Controllers
                     {
                         DateTime = eventDTO.EndTime,
                         
-                    }
+                    },
+                    
+                    Attachments = eventAttachments.Count>0 ? eventAttachments : null,
+                    
+                    
+
                 };
                 // Use Google Calendar API to create event
                 EventsResource.InsertRequest request = _service.Events.Insert(newEvent, _calendarID);
+                request.SupportsAttachments = true;
                 Event createdEvent = await request.ExecuteAsync();
 
                 // Return the created event details

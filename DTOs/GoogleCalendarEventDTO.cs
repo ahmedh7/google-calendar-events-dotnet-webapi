@@ -11,15 +11,15 @@ namespace GoogleCalendarAPI.DTOs
         public string Description { get; set; } = string.Empty;
 
         [Required]
-
         [ValidateFutureDateTime]
         [ValidateCreationDays]
         public DateTime? StartTime { get; set; }
 
         [Required]
-
         [ValidateFutureDateTime]
         [ValidateCreationDays]
         public DateTime? EndTime { get; set; }
+
+        public List<string> AttachmentURLs { get; set; }
     }
 }
