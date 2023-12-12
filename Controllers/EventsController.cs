@@ -13,6 +13,7 @@ using GoogleCalendarAPI.DTOs;
 using Newtonsoft.Json.Linq;
 using System.Xml;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 
 namespace GoogleCalendarAPI.Controllers
 {
@@ -46,13 +47,14 @@ namespace GoogleCalendarAPI.Controllers
                     Description = eventDTO.Description,
                     Start = new EventDateTime()
                     {
-                        DateTimeDateTimeOffset = Convert.ToDateTime(eventDTO.StartTime),
+
+                        DateTime = eventDTO.StartTime,
                         
 
                     },
                     End = new EventDateTime()
                     {
-                        DateTimeDateTimeOffset = Convert.ToDateTime(eventDTO.EndTime),
+                        DateTime = eventDTO.EndTime,
                         
                     }
                 };
@@ -61,7 +63,7 @@ namespace GoogleCalendarAPI.Controllers
                 Event createdEvent = await request.ExecuteAsync();
 
                 // Return the created event details
-                return Created("api/events/{eventId}", createdEvent);
+                return Created("api/events/{eventId}", _service.SerializeObject(createdEvent));
 
             }
             catch(Exception ex) 
@@ -98,18 +100,20 @@ namespace GoogleCalendarAPI.Controllers
             EventsResource.ListRequest request = _service.Events.List(_calendarID);
             string? pageToken = null;
             Events events;
+            List <IList<Event>>  eventsList = new();
             do
             {
                 request.Q = searchString;
                 request.PageToken = pageToken;
                 request.MaxResults = 10;
-                events = request.Execute();
-                
-            } while (request.PageToken != null);
+                events =  request.Execute();
+                pageToken = events.NextPageToken;
+                eventsList.Add(events.Items);
+            } while (pageToken != null);
 
-
+            var jsonRes = _service.SerializeObject(eventsList);
             // Return list of events
-            return Ok(events.Items);
+            return Ok(jsonRes);
             
         }
     }

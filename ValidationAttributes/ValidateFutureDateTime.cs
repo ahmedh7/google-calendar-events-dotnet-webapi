@@ -6,6 +6,7 @@ namespace GoogleCalendarAPI.ValidationAttributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+
             DateTime _dateTime = Convert.ToDateTime(value);
             if (_dateTime > DateTime.Now)
             {

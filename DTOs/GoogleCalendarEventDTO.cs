@@ -11,13 +11,13 @@ namespace GoogleCalendarAPI.DTOs
         public string Description { get; set; } = string.Empty;
 
         [Required]
-        [DataType(DataType.DateTime)]
+
         [ValidateFutureDateTime]
         [ValidateCreationDays]
         public DateTime? StartTime { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
+
         [ValidateFutureDateTime]
         [ValidateCreationDays]
         public DateTime? EndTime { get; set; }
